@@ -57,15 +57,17 @@
             async submitForm() {
                 this.success = '';
                 this.errors = [];
-                let response = await axios.post('api/users/add', this.form);
-                if (response.data != 'success') {
-                    for(let prop in response.data) {
-                     this.errors.push(JSON.stringify(response.data[prop]).slice(2, -2));
-                    }
-                } else {
+                await axios.post('api/users', this.form)
+                .then((response) => {
+                    if (response.data.hasOwnProperty("errors")) {
+                        for(let prop in response.data.errors) {
+                        this.errors.push(JSON.stringify(response.data.errors[prop]).slice(2, -2));
+                        }
+                    } else {
                     this.success = 'Dati salvati con successo';
-                } 
-                }
+                    } 
+                });
+            }
         },
     }
 </script>

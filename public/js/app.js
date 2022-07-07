@@ -5435,7 +5435,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response, prop;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -5443,20 +5442,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.success = '';
                 _this.errors = [];
                 _context.next = 4;
-                return axios.post('api/users/add', _this.form);
+                return axios.post('api/users', _this.form).then(function (response) {
+                  if (response.data.hasOwnProperty("errors")) {
+                    for (var prop in response.data.errors) {
+                      _this.errors.push(JSON.stringify(response.data.errors[prop]).slice(2, -2));
+                    }
+                  } else {
+                    _this.success = 'Dati salvati con successo';
+                  }
+                });
 
               case 4:
-                response = _context.sent;
-
-                if (response.data != 'success') {
-                  for (prop in response.data) {
-                    _this.errors.push(JSON.stringify(response.data[prop]).slice(2, -2));
-                  }
-                } else {
-                  _this.success = 'Dati salvati con successo';
-                }
-
-              case 6:
               case "end":
                 return _context.stop();
             }
